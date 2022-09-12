@@ -86,9 +86,77 @@ function Tree(array) {
         }
     }
 
+    const findInorderSuccessor = (node) => {
+        if(node.left == null) {
+            const savedData = node.data;
+            remove(node.data);
+            return savedData;
+        } else {
+            return findInorderSuccessor(node.left);
+        }
+    }
+
+    const remove = (data, node = root, parent = null, isLeft = null) => {
+        if(data == node.data) {
+            if(node.left == null && node.right == null) {
+                if(parent == null) {
+                    root = null;
+                } else {
+                    if(isLeft) {
+                        parent.left = null;
+                    } else {
+                        parent.right = null;
+                    }
+                }
+            } else if(node.left == null) {
+                if(parent == null) {
+                    root = node.right;
+                } else {
+                    if(isLeft) {
+                        parent.left = node.right;
+                    } else {
+                        parent.right = node.right;
+                    }
+                }
+            } else if(node.right == null) {
+                if(parent == null) {
+                    root = node.left;
+                } else {
+                    if(isLeft) {
+                        parent.left = node.left;
+                    } else {
+                        parent.right = node.left;
+                    }
+                }
+            } else {
+                if(parent == null) {
+                    root.data = findInorderSuccessor(node.right);
+                } else {
+                    if(isLeft) {
+                        parent.left.data = findInorderSuccessor(node.right);
+                    } else {
+                        parent.right.data = findInorderSuccessor(node.right);
+                    }
+                }
+            }
+        } else if(data > node.data) {
+            if(node.right == null) {
+                return;
+            } else {
+                remove(data, node.right, node, false);
+            }
+        } else if(data < node.data) {
+            if(node.left == null) {
+                return;
+            } else {
+                remove(data, node.left, node, true);
+            }
+        }
+    }
+
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
-    return {root, insert};
+    return {root, insert, remove};
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -110,5 +178,21 @@ prettyPrint(myTree.root);
 myTree.insert(10);
 myTree.insert(20);
 myTree.insert(7);
+
+prettyPrint(myTree.root);
+
+myTree.remove(20);
+
+prettyPrint(myTree.root);
+
+myTree.remove(23);
+
+prettyPrint(myTree.root);
+
+myTree.remove(4);
+
+prettyPrint(myTree.root);
+
+myTree.remove(8);
 
 prettyPrint(myTree.root);
