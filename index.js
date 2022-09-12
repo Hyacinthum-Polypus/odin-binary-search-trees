@@ -228,12 +228,32 @@ function Tree(array) {
     }
 
     const height = (data) => {
-        return height2(find(data)) - 1;
+        let selectedNode = find(data);
+        if(selectedNode != null) return height2(selectedNode) - 1;
+    }
+
+    const depth = (data, node = root, h = 0) => {
+        h++;
+        if(data == node.data) {
+            return h - 1;
+        } else if(data > node.data) {
+            if(node.right == null) {
+                return null;
+            } else {
+                return depth(data, node.right, h);
+            }
+        } else if(data < node.data) {
+            if(node.left == null) {
+                return null;
+            } else {
+                return depth(data, node.left, h);
+            }
+        }
     }
 
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
-    return {root, insert, remove, find, levelOrder, inorder, preorder, postorder, height};
+    return {root, insert, remove, find, levelOrder, inorder, preorder, postorder, height, depth};
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -281,3 +301,4 @@ myTree.insert(13);
 prettyPrint(myTree.root);
 
 console.log(myTree.height(9));
+console.log(myTree.depth(67));
