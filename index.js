@@ -218,10 +218,22 @@ function Tree(array) {
         if(callbackfn != null) callbackfn(node);
         if(callbackfn == null) return array;
     }
+    
+    const height2 = (node) => {
+        let leftH = 0;
+        let rightH = 0
+        if(node.left != null) leftH = height2(node.left);
+        if(node.right != null) rightH = height2(node.right);
+        return (1 + (leftH > rightH ? leftH : rightH));
+    }
+
+    const height = (data) => {
+        return height2(find(data)) - 1;
+    }
 
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
-    return {root, insert, remove, find, levelOrder, inorder, preorder, postorder};
+    return {root, insert, remove, find, levelOrder, inorder, preorder, postorder, height};
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -260,9 +272,12 @@ prettyPrint(myTree.root);
 
 myTree.remove(8);
 
+myTree.insert(500);
+
+myTree.insert(11);
+myTree.insert(12);
+myTree.insert(13);
+
 prettyPrint(myTree.root);
 
-console.log(myTree.find(324));
-
-myTree.inorder(node => console.log(node.data));
-console.log(myTree.inorder());
+console.log(myTree.height(9));
