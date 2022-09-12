@@ -154,9 +154,27 @@ function Tree(array) {
         }
     }
 
+    const find = (data, node = root) => {
+        if(data == node.data) {
+            return node;
+        } else if(data > node.data) {
+            if(node.right == null) {
+                return null;
+            } else {
+                return find(data, node.right);
+            }
+        } else if(data < node.data) {
+            if(node.left == null) {
+                return null;
+            } else {
+                return find(data, node.left);
+            }
+        }
+    }
+
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
-    return {root, insert, remove};
+    return {root, insert, remove, find};
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -196,3 +214,5 @@ prettyPrint(myTree.root);
 myTree.remove(8);
 
 prettyPrint(myTree.root);
+
+console.log(myTree.find(324));
