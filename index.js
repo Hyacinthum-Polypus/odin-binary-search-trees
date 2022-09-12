@@ -305,46 +305,49 @@ function Tree(array) {
     return {root, prettyPrint, insert, remove, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced, rebalance};
 }
 
+const myArray = [463, 487, 838, 38, 511, 144, 318, 525, 178, 997, 801, 468, 140, 519, 723, 412, 719];
 
-
-myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-
-myTree = Tree(myArray);
+const myTree = Tree(myArray);
 
 myTree.prettyPrint();
 
-myTree.insert(10);
-myTree.insert(20);
-myTree.insert(7);
+console.log(myTree.isBalanced());
 
-myTree.prettyPrint();
+console.log("Level order:");
+myTree.levelOrder(node => console.log(node.data));
 
-myTree.remove(20);
+console.log("Preorder:");
+myTree.preorder(node => console.log(node.data));
 
-myTree.prettyPrint();
+console.log("Postorder:");
+myTree.postorder(node => console.log(node.data));
 
-myTree.remove(23);
+console.log("Inorder:");
+myTree.inorder(node => console.log(node.data));
 
-myTree.prettyPrint();
-
-myTree.remove(4);
-
-myTree.prettyPrint();
-
-myTree.remove(8);
-
+myTree.insert(100);
+myTree.insert(350);
+myTree.insert(450);
 myTree.insert(500);
-
-myTree.insert(11);
-myTree.insert(12);
-myTree.insert(13);
+myTree.insert(800);
+myTree.insert(1240);
+myTree.insert(770);
 
 myTree.prettyPrint();
-
-console.log(myTree.height(9));
-console.log(myTree.depth(67));
 console.log(myTree.isBalanced());
 
 myTree.rebalance();
 myTree.prettyPrint();
 console.log(myTree.isBalanced());
+
+console.log("Level order:");
+myTree.levelOrder(node => console.log(node.data));
+
+console.log("Preorder:");
+myTree.preorder(node => console.log(node.data));
+
+console.log("Postorder:");
+myTree.postorder(node => console.log(node.data));
+
+console.log("Inorder:");
+myTree.inorder(node => console.log(node.data));
