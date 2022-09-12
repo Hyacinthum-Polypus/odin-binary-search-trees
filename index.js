@@ -1,13 +1,12 @@
 #!/usr/bin/node
 
 function removeDuplicates(array) {
-    array.reduce((newArray, currentElement) => {
-        if(newArray.find((newArrayElement) => {newArrayElement == currentElement}) == undefined) {
-            newArray.push(currentElement);
-            return newArray;
+    return array.reduce((newArray, element) => {
+        if(newArray.indexOf(element) == -1) {
+            newArray.push(element);
         }
+        return newArray;
     }, []);
-    return array;
 }
 
 function mergeSort(unsortedArray) {
