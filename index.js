@@ -2,7 +2,7 @@
 
 function removeDuplicates(array) {
     array.reduce((newArray, currentElement) => {
-        if(newArray.find(currentElement) == undefined) {
+        if(newArray.find((newArrayElement) => {newArrayElement == currentElement}) == undefined) {
             newArray.push(currentElement);
             return newArray;
         }
@@ -58,18 +58,35 @@ function Node(value) {
 
 function Tree(array) {
     let cleanedArray = cleanArray(array);
-    const buildTree = (array) => {
-        if(array == []) return null;
-        const mid = array.length // 2;
+    const buildTree = (array, start, end) => {
+        if(start > end) return null;
+        const mid = (start + end) // 2;
         const root = Node(array[mid]); 
-        const left = buildTree(array.slice(0, mid-1));
-        const right = buildTree(array.slice(mid+1, array.length));
+        const left = buildTree(array.slice(0, mid), 0, mid-1);
+        const right = buildTree(array.slice(mid+1, array.length), mid+1, array.length - 1);
         root.left = left;
         root.right = right;
         return root;
     }
 
-    const root = buildTree(cleanedArray)
+    const root = buildTree(cleanedArray, 0, cleanArray.length - 1);
 
     return root;
 }
+
+const prettyPrint = (node, prefix = '', isLeft = true) => {
+    console.log("Check!");
+    if (node.right !== null) {
+      prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    if (node.left !== null) {
+      prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+}
+
+myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
+myTree = Tree(myArray);
+
+prettyPrint(myTree.root);
