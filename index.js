@@ -258,7 +258,6 @@ function Tree(array) {
         if(node.left != null) leftH = height(node.left.data) + 1;
         if(node.right != null) rightH = height(node.right.data) + 1;
 
-        if(node.data == 5) console.log(leftH, rightH);
         if(leftH == rightH) {
             return true;
         } else if(leftH > rightH) {
@@ -292,9 +291,18 @@ function Tree(array) {
         }
     }
 
-    const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
+    const rebalance = () => {
+        const nodes = inorder();
+        let data = nodes.reduce((data, node) => {
+            data.push(node.data);
+            return data;
+        }, []);
+        root = buildTree(cleanArray(data), 0, data.length - 1);
+    }
 
-    return {root, prettyPrint, insert, remove, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced};
+    let root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
+
+    return {root, prettyPrint, insert, remove, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced, rebalance};
 }
 
 
@@ -337,9 +345,6 @@ console.log(myTree.height(9));
 console.log(myTree.depth(67));
 console.log(myTree.isBalanced());
 
-myTree.remove(500);
-myTree.remove(13);
-myTree.remove(12);
-
+myTree.rebalance();
 myTree.prettyPrint();
 console.log(myTree.isBalanced());
