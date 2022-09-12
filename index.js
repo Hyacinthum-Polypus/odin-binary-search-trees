@@ -251,44 +251,77 @@ function Tree(array) {
         }
     }
 
+    const isBalanced2 = node => {
+        let leftH = 0;
+        let rightH = 0;
+
+        if(node.left != null) leftH = height(node.left.data) + 1;
+        if(node.right != null) rightH = height(node.right.data) + 1;
+
+        if(node.data == 5) console.log(leftH, rightH);
+        if(leftH == rightH) {
+            return true;
+        } else if(leftH > rightH) {
+            return !((leftH - rightH) > 1);
+        } else {
+            return !((rightH - leftH) > 1);
+        }
+    }
+
+    const isBalanced = () => {
+        const nodes = inorder();
+        let isTreeBalanced = true;
+        for (let index = 0; index < nodes.length; index++) {
+            const node = nodes[index];
+            isThisNodeBalanced = isBalanced2(node);
+            if(!isThisNodeBalanced) {
+                isTreeBalanced = false;
+                break;
+            }
+        }
+        return isTreeBalanced;
+    }
+
+    const prettyPrint = (node = root, prefix = '', isLeft = true) => {
+        if (node.right !== null) {
+          prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+        }
+        console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+        if (node.left !== null) {
+          prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+        }
+    }
+
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
-    return {root, insert, remove, find, levelOrder, inorder, preorder, postorder, height, depth};
+    return {root, prettyPrint, insert, remove, find, levelOrder, inorder, preorder, postorder, height, depth, isBalanced};
 }
 
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-    if (node.right !== null) {
-      prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-    }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-    if (node.left !== null) {
-      prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-    }
-}
+
 
 myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 myTree = Tree(myArray);
 
-prettyPrint(myTree.root);
+myTree.prettyPrint();
 
 myTree.insert(10);
 myTree.insert(20);
 myTree.insert(7);
 
-prettyPrint(myTree.root);
+myTree.prettyPrint();
 
 myTree.remove(20);
 
-prettyPrint(myTree.root);
+myTree.prettyPrint();
 
 myTree.remove(23);
 
-prettyPrint(myTree.root);
+myTree.prettyPrint();
 
 myTree.remove(4);
 
-prettyPrint(myTree.root);
+myTree.prettyPrint();
 
 myTree.remove(8);
 
@@ -298,7 +331,15 @@ myTree.insert(11);
 myTree.insert(12);
 myTree.insert(13);
 
-prettyPrint(myTree.root);
+myTree.prettyPrint();
 
 console.log(myTree.height(9));
 console.log(myTree.depth(67));
+console.log(myTree.isBalanced());
+
+myTree.remove(500);
+myTree.remove(13);
+myTree.remove(12);
+
+myTree.prettyPrint();
+console.log(myTree.isBalanced());
