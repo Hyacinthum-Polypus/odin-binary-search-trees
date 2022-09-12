@@ -172,32 +172,51 @@ function Tree(array) {
         }
     }
 
-    const levelOrder = (callbackfn) => {
+    const levelOrder = (callbackfn = null) => {
         let queue = [root];
+        if(callbackfn == null) {
+            let array = [];
+        } else {
+            let array = null;
+        }
         while(queue.length > 0) {
             if(queue[0].left != null) queue.push(queue[0].left);
             if(queue[0].right != null) queue.push(queue[0].right);
-            callbackfn(queue[0]);
+            if(callbackfn != null) {
+                callbackfn(queue[0]);
+            } else {
+                array.push(queue[0]);
+            }
             queue.shift();
         }
+        return array;
     }
 
-    const inorder = (callbackfn, node = root) => {
-        if(node.left != null) inorder(callbackfn, node.left);
-        callbackfn(node);
-        if(node.right != null) inorder(callbackfn, node.right);
+    const inorder = (callbackfn = null, node = root) => {
+        let array = [];
+        if(node.left != null) array = array.concat(inorder(callbackfn, node.left));
+        array = array.concat(node);
+        if(callbackfn != null) callbackfn(node);
+        if(node.right != null) array = array.concat(inorder(callbackfn, node.right));
+        if(callbackfn == null) return array;
     }
 
-    const preorder = (callbackfn, node = root) => {
-        callbackfn(node);
-        if(node.left != null) preorder(callbackfn, node.left);
-        if(node.right != null) preorder(callbackfn, node.right);
+    const preorder = (callbackfn = null, node = root) => {
+        let array = [];
+        array = array.concat(node);
+        if(callbackfn != null) callbackfn(node);
+        if(node.left != null) array = array.concat(preorder(callbackfn, node.left));
+        if(node.right != null) array = array.concat(preorder(callbackfn, node.right));
+        if(callbackfn == null) return array;
     }
 
-    const postorder = (callbackfn, node = root) => {
-        if(node.left != null) postorder(callbackfn, node.left);
-        if(node.right != null) postorder(callbackfn, node.right);
-        callbackfn(node);
+    const postorder = (callbackfn = null, node = root) => {
+        let array = [];
+        if(node.left != null) array = array.concat(postorder(callbackfn, node.left));
+        if(node.right != null) array = array.concat(postorder(callbackfn, node.right));
+        array = array.concat(node);
+        if(callbackfn != null) callbackfn(node);
+        if(callbackfn == null) return array;
     }
 
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
@@ -245,4 +264,5 @@ prettyPrint(myTree.root);
 
 console.log(myTree.find(324));
 
-myTree.postorder(node => console.log(node.data));
+myTree.inorder(node => console.log(node.data));
+console.log(myTree.inorder());
