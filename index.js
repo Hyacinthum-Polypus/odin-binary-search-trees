@@ -175,21 +175,34 @@ function Tree(array) {
     const levelOrder = (callbackfn) => {
         let queue = [root];
         while(queue.length > 0) {
-            if(queue[0].left != null) {
-                queue.push(queue[0].left);
-            }
-            if(queue[0].right != null) {
-                queue.push(queue[0].right);
-            }
+            if(queue[0].left != null) queue.push(queue[0].left);
+            if(queue[0].right != null) queue.push(queue[0].right);
             callbackfn(queue[0]);
             queue.shift();
         }
+    }
 
+    const inorder = (callbackfn, node = root) => {
+        if(node.left != null) inorder(callbackfn, node.left);
+        callbackfn(node);
+        if(node.right != null) inorder(callbackfn, node.right);
+    }
+
+    const preorder = (callbackfn, node = root) => {
+        callbackfn(node);
+        if(node.left != null) preorder(callbackfn, node.left);
+        if(node.right != null) preorder(callbackfn, node.right);
+    }
+
+    const postorder = (callbackfn, node = root) => {
+        if(node.left != null) postorder(callbackfn, node.left);
+        if(node.right != null) postorder(callbackfn, node.right);
+        callbackfn(node);
     }
 
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
-    return {root, insert, remove, find, levelOrder};
+    return {root, insert, remove, find, levelOrder, inorder, preorder, postorder};
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -232,4 +245,4 @@ prettyPrint(myTree.root);
 
 console.log(myTree.find(324));
 
-myTree.levelOrder(console.log);
+myTree.postorder(node => console.log(node.data));
