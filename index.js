@@ -49,32 +49,31 @@ function cleanArray(uncleanArray) {
 }
 
 
-function Node(value) {
+function Node(data) {
     let left = null;
     let right = null;
-    return {value, left, right}
+    return {data, left, right}
 }
 
 function Tree(array) {
     let cleanedArray = cleanArray(array);
     const buildTree = (array, start, end) => {
         if(start > end) return null;
-        const mid = (start + end) // 2;
+        const mid = Math.floor((start + end) / 2);
         const root = Node(array[mid]); 
-        const left = buildTree(array.slice(0, mid), 0, mid-1);
-        const right = buildTree(array.slice(mid+1, array.length), mid+1, array.length - 1);
+        const left = buildTree(array, start, mid-1);
+        const right = buildTree(array, mid+1, end);
         root.left = left;
         root.right = right;
         return root;
     }
 
-    const root = buildTree(cleanedArray, 0, cleanArray.length - 1);
+    const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
     return root;
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
-    console.log("Check!");
     if (node.right !== null) {
       prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
     }
@@ -88,4 +87,4 @@ myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 myTree = Tree(myArray);
 
-prettyPrint(myTree.root);
+prettyPrint(myTree);
