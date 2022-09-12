@@ -68,9 +68,27 @@ function Tree(array) {
         return root;
     }
 
+    const insert = (data, node = root) => {
+        if(data == node.data) {
+            return;
+        } else if(data > node.data) {
+            if(node.right == null) {
+                node.right = Node(data);
+            } else {
+                insert(data, node.right);
+            }
+        } else if(data < node.data) {
+            if(node.left == null) {
+                node.left = Node(data);
+            } else {
+                insert(data, node.left);
+            }
+        }
+    }
+
     const root = buildTree(cleanedArray, 0, cleanedArray.length - 1);
 
-    return root;
+    return {root, insert};
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -87,4 +105,10 @@ myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 myTree = Tree(myArray);
 
-prettyPrint(myTree);
+prettyPrint(myTree.root);
+
+myTree.insert(10);
+myTree.insert(20);
+myTree.insert(7);
+
+prettyPrint(myTree.root);
